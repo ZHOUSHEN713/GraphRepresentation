@@ -1,0 +1,21 @@
+# Fdb version 3
+["pdflatex"] 1633012214 "d:/Projects/GraphRepresentation/Report/test.tex" "d:/Projects/GraphRepresentation/Report/test.pdf" "test" 1633012215
+  "c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1632929125 35752 024fb6c41858982481f6968b5fc26508 ""
+  "c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1632929125 32762 7fee39e011c23b3589931effd97b9702 ""
+  "c:/texlive/2021/texmf-dist/tex/latex/base/article.cls" 1632930059 20145 aad8c3dd3bc36e260347b84002182bc2 ""
+  "c:/texlive/2021/texmf-dist/tex/latex/base/size10.clo" 1632930059 8449 a72d5d4e612221b46000c3d71724e0ef ""
+  "c:/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def" 1632930046 27164 3d5f7887a89df4eb2f6e86ba26ef3254 ""
+  "c:/texlive/2021/texmf-dist/web2c/texmf.cnf" 1632930034 39972 3d6bb4d9d719e93193fa020b58adf5d4 ""
+  "c:/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1632931474 5211361 49fad849de0db61b73297532470512eb ""
+  "c:/texlive/2021/texmf-var/web2c/pdftex/pdflatex.fmt" 1632931636 2724554 80df57a72ee6a6cc543a5d4deec5ff52 ""
+  "c:/texlive/2021/texmf.cnf" 1632931449 713 e69b156964470283e0530f5060668171 ""
+  "d:/Projects/GraphRepresentation/Report/test.aux" 1633012215 32 3985256e7290058c681f74d7a3565a19 ""
+  "d:/Projects/GraphRepresentation/Report/test.tex" 1633012212 88 8f91e5c839e917bac3fe6bc6d04f13fc ""
+  "test.aux" 1633012215 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "test.tex" 1633012212 88 8f91e5c839e917bac3fe6bc6d04f13fc ""
+  (generated)
+  "d:/Projects/GraphRepresentation/Report/test.log"
+  "test.aux"
+  "test.pdf"
+  "test.log"
+  "d:/Projects/GraphRepresentation/Report/test.pdf"

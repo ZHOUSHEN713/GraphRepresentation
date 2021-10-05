@@ -5,7 +5,7 @@ from RandomWalk import GenerateWalks
 from gensim.models import Word2Vec
 
 
-def GetLogger():
+def getLogger():
     _logger = logging.getLogger()
     _logger.setLevel(logging.INFO)
     formatter = logging.Formatter(fmt="[ %(asctime)s ] %(message)s", datefmt="%a %b %d %H:%M:%S %Y")
@@ -26,9 +26,9 @@ if __name__ == "__main__":
     parser.add_argument('--emb_size', type=int, default=2**8)
     parser.add_argument('--window_size', type=int, default=10)
     parser.add_argument('--workers', type=int, default=4)
-    parser.add_argument('--is_directed', type=bool, default=False)
+    parser.add_argument('--is_directed', type=bool, default=True)
     args = parser.parse_args()
-    logger = GetLogger()
+    logger = getLogger()
     # directed graph
     graph = nx.read_edgelist(f"../data/{args.dataset}/{args.dataset}_edges.txt",
                              create_using=nx.DiGraph(), nodetype=int)

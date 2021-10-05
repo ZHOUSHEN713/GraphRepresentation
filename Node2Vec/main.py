@@ -27,7 +27,7 @@ if __name__ == "__main__":
     parser.add_argument('--window_size', type=int, default=10)
     parser.add_argument('--workers', type=int, default=4)
     parser.add_argument('--is_weighted', type=bool, default=False)
-    parser.add_argument('--is_directed', type=bool, default=False)
+    parser.add_argument('--is_directed', type=bool, default=True)
     parser.add_argument('--p', type=float, default=2)
     parser.add_argument('--q', type=float, default=0.5)
     args = parser.parse_args()
