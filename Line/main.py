@@ -33,6 +33,7 @@ class Trainer:
                 torch.nn.init.xavier_uniform_(param.data)
             except:
                 pass
+
     def preprocess_probs(self):
         power = 0.75
         degree = defaultdict(int)
@@ -105,4 +106,3 @@ if __name__ == "__main__":
 
     trainer = Trainer(graph, line, optimizer, args)
     trainer.train()
-

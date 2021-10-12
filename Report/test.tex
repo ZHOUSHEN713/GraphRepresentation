@@ -1,4 +1,47 @@
-\documentclass{article}
+\documentclass{beamer}
+% 中文排版支持
+\usepackage{xeCJK}
+% 默认的数学公式较难看，使用serif可以使得公式的样式变为常用latex的公式样式
+\usefonttheme[onlymath]{serif}
+% 设置幻灯片主题,这里选择带目录的侧边导航栏
+\usetheme{Berkeley}
+\usecolortheme{default}
+% -----------------------------------------------------------
+% 设置封面内容
+\title{题目}
+\subtitle{小标题}
+\author{杜衡图南}
+\institute{学校名称}
+\date{\today}
+% \logo{\includegraphics[height=1.5cm]{lion-logo.png}}
+% 封面设置结束
+% ------------------------------------------------------------
+% ------------------------------------------------------------
+% 在每一章节前都显示目录，并高亮接下来的小节。
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{目录}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+% ------------------------------------------------------------
 \begin{document}
-``Hello world!'' from \LaTeX.
+% 封面
+\frame{\titlepage}
+% ---------------------------------------------------------
+% 目录
+\begin{frame}
+  \frametitle{目录}
+  % 显示目录，并超链接到对应的section
+  \tableofcontents
+\end{frame}
+% ---------------------------------------------------------
+\section{节标题}
+% ---------------------------------------------------------
+\begin{frame}
+  \frametitle{幻灯片标题}
+  幻灯片内容
+\end{frame}
+% ---------------------------------------------------------
 \end{document}
