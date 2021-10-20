@@ -1,0 +1,6 @@
+\beamer@sectionintoc {1}{Word2Vec}{3}{0}{1}
+\beamer@sectionintoc {2}{DeepWalk}{10}{0}{2}
+\beamer@sectionintoc {3}{Node2Vec}{15}{0}{3}
+\beamer@sectionintoc {4}{Struc2Vec}{16}{0}{4}
+\beamer@sectionintoc {5}{LINE}{17}{0}{5}
+\beamer@sectionintoc {6}{SDNE}{18}{0}{6}
