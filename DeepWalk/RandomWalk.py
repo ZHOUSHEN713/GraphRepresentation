@@ -1,4 +1,5 @@
 import random
+from tqdm import tqdm
 
 
 def RandomWalk(start, length, graph):
@@ -22,7 +23,8 @@ def RandomWalk(start, length, graph):
 def GenerateWalks(per_num, length, graph):
     walks = []
     nodes = list(graph.nodes())
-    for _ in range(per_num):
+    for _ in tqdm(range(per_num)):
+        # 对于每一个node生成per_num条长度为length的序列
         random.shuffle(nodes)
         for ver in nodes:
             walks.append(RandomWalk(ver, length, graph))

@@ -171,25 +171,208 @@
         $\underset{\Phi}{\operatorname{minimize}}-\log \operatorname{Pr}\left(\left\{v_{i-w}, \cdots, v_{i-1}, v_{i+1}, \cdots, v_{i+w}\right\} \mid \Phi\left(v_{i}\right)\right)$
     \end{corollary}
 \end{frame}
+% 结果
+\begin{frame}{DeepWalk}
+    \framesubtitle{复现结果}
+    \begin{table}[]
+        \resizebox{\textwidth}{!}
+        {
+            \begin{tabular}{lllllllllll}
+                        & Label Node\% & 10    & 20    & 30    & 40    & 50    & 60    & 70    & 80    & 90    \\
+            micro-F1 & 原文结果         & 36.00 & 38.20 & 39.60 & 40.30 & 41.00 & 41.30 & 41.50 & 41.50 & 42.00 \\
+                        & 复现结果         & 36.00 & 38.73 & 39.75 & 40.70 & 41.27 & 41.98 & 42.18 & 41.99 & 42.65 \\
+            macro-F1 & 原文结果         & 21.30 & 23.80 & 25.30 & 26.30 & 27.30 & 27.60 & 27.90 & 28.20 & 28.90 \\
+                        & 复现结果         & 20.90 & 23.78 & 25.33 & 26.31 & 27.09 & 27.84 & 28.16 & 28.25 & 28.78
+            \end{tabular}
+        }
+    \end{table}
+\end{frame}
 % ---------------------------------------Node2Vec---------------------------------------
 \section{Node2Vec}
+% 为什么使用BFS与DFS
 \begin{frame}{Node2Vec}
-    
+    \framesubtitle{Classic Search Strategies}
+    \centering\includegraphics[height=3.8cm]{node2vec_1.pdf}
+    1. The neighborhoods sampled by BFS lead to embeddings that correspond closely to structural equivalence.\\
+    2. DFS can freely explore network neighborhoods which is important in discovering homophilous communities.
+\end{frame}
+% 如何控制BFS与DFS
+\begin{frame}{Node2Vec}
+    \framesubtitle{Search Bias $\alpha$ }
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \centering\includegraphics[height=3.6cm]{node2vec_2.pdf}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            $$
+            \alpha_{p q}(t, x)= \begin{cases}\frac{1}{p} & \text { if } d_{t x}=0 \\ 1 & \text { if } d_{t x}=1 \\ \frac{1}{q} & \text { if } d_{t x}=2\end{cases}
+            $$
+        \end{column}
+    \end{columns}
+\end{frame}
+% 优化目标与算法
+\begin{frame}{Node2Vec}
+    \framesubtitle{Algorithm}
+    \centering\includegraphics[height=5cm]{node2vec_3.pdf}
+    \begin{corollary}
+        $\max _{f} \sum_{u \in V}\left[\sum_{n_{i} \in N_{S}(u)} f\left(n_{i}\right) \cdot f(u)-\log Z_{u}\right]$
+    \end{corollary}
 \end{frame}
 % ---------------------------------------Stuc2Vec---------------------------------------
 \section{Struc2Vec}
+% Overview
 \begin{frame}{Struc2Vec}
-    
+    \centering\includegraphics[height=5cm]{struc2vec.pdf}
+    \begin{block}{Limitation}
+        Structurally similar nodes will never share the same context if their distance (hop count) is larger than the Skip-Gram window.
+    \end{block}
+\end{frame}
+% 符号解释
+\begin{frame}{Struc2Vec}
+    \framesubtitle{Structural Similarity}
+    \begin{equation}
+        \begin{gathered}
+        f_{k}(u, v)=f_{k-1}(u, v)+g\left(s\left(R_{k}(u)\right), s\left(R_{k}(v)\right)\right) \\
+        k \geq 0 \text { and }\left|R_{k}(u)\right|,\left|R_{k}(v)\right|>0
+        \end{gathered}
+    \end{equation}
+    \begin{alertblock}{符号解释}
+        \begin{description}
+            \item [$f_k(u, v)$] structural distance when consider k-hop neighborhoods
+            \item[$R_{k}(u)$] the ring of nodes at distance k
+            \item[$s(S)$] the ordered degree sequence
+            \item[$g(a, b)$] DTW Function  
+        \end{description}
+    \end{alertblock}
+\end{frame}
+% R, S
+\begin{frame}{Struc2Vec}
+    \framesubtitle{Example}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \centering\includegraphics[height=4.6cm]{struc2vec_example.pdf}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{example}
+                \begin{align*}
+                    & R_1(1)=\{2,3,4,6,7\} \\
+                    & R_2(1)=\{5,8,9\}\\
+                    & s(R_1(1))=\{1,1,1,2,3\}\\
+                    & s(R_2(1))=\{1,1,1\} \\
+                \end{align*}
+            \end{example}
+        \end{column}
+    \end{columns}
+\end{frame}
+% DTW
+\begin{frame}{Struc2Vec}
+    \framesubtitle{DTW}
+    \begin{block}{Dynamic Time Warping}
+        利用动态规划的思想来计算两条不等长序列的相似度
+    \end{block}
+    动态转移方程如下：
+    $$
+    g(i, j) = min\{g(i-1, j),g(i, j-1),g(i-1, j-1)\} + d(i, j)
+    $$
+    $$d(a, b) = \frac{max(a, b)}{min(a, b)} - 1$$
 \end{frame}
 % ---------------------------------------LINE--------------------------------------------
 \section{LINE}
+% 一阶相似度与二阶相似度
 \begin{frame}{LINE}
-    
+    \framesubtitle{Overview}
+    \centering\includegraphics[height=6cm]{line.pdf}
+\end{frame}
+% 一阶
+\begin{frame}{LINE}
+    \framesubtitle{First-Order Proximity}
+    The Joint Probability between $v_i$ and $v_j$:
+    $$p_{1}\left(v_{i}, v_{j}\right)=\frac{1}{1+\exp \left(-\vec{u}_{i}^{T} \cdot \vec{u}_{j}\right)}$$ 
+    Empirical Probability $\hat{p}_1(i, j)=\frac{w_{ij}}{W}$
+    $$O_{1}=d\left(\hat{p}_{1}(\cdot, \cdot), p_{1}(\cdot, \cdot)\right)$$ 
+    where $d(·, ·)$ is the distance between two distributions.
+    \begin{block}{Objective Function}
+        min $O_{1}=-\sum_{(i, j) \in E} w_{i j} \log p_{1}\left(v_{i}, v_{j}\right)$
+    \end{block}
+\end{frame}
+% 二阶
+\begin{frame}{LINE}
+    \framesubtitle{Second-Order Proximity}
+    The Probability of Context $v_j$ generated by vertex $v_i$ as:
+    $$
+    p_{2}\left(v_{j} \mid v_{i}\right)=\frac{\exp \left(\vec{u}_{j}^{T} \cdot \vec{u}_{i}\right)}{\sum_{k=1}^{|V|} \exp \left(\vec{u}_{k}^{\prime T} \cdot \vec{u}_{i}\right)}
+    $$
+    Empirical Probability $\hat{p}_1(v_j \mid v_i)=\frac{w_{ij}}{d_i}$
+    \begin{block}{Objective Function}
+        $O_{2}=-\sum_{(i, j) \in E} w_{i j} \log p_{2}\left(v_{j} \mid v_{i}\right)$
+    \end{block}
+\end{frame}
+% 优化
+\begin{frame}{LINE}
+    \framesubtitle{Optimization}
+    1. Negative Sample
+    $$
+    \log \sigma\left(\vec{u}_{j}^{\prime T} \cdot \vec{u}_{i}\right)+\sum_{i=1}^{K} E_{v_{n} \sim P_{n}(v)}\left[\log \sigma\left(-\vec{u}_{n}^{T} \cdot \vec{u}_{i}\right)\right]
+    $$
+    where $\sigma (x) = \frac{1}{1 + exp(−x)}$ is the sigmoid function.\\
+    \hspace*{\fill}\\ 
+    \hspace*{\fill}\\ 
+    \hspace*{\fill}\\
+    2. Edge Sample - Alias Sample
 \end{frame}
 % -----------------------------------------SDNE-----------------------------------------
 \section{SDNE}
 \begin{frame}{SDNE}
-    
+    \framesubtitle{Overview}
+    \centering\includegraphics[height=6cm]{SDNE.pdf}
+\end{frame}
+% 一阶
+\begin{frame}{SDNE}
+    \framesubtitle{First-Order Proximity}
+    Encoder and Decoder
+    $$
+    \begin{aligned}
+    &\mathbf{y}_{i}^{(1)}=\sigma\left(W^{(1)} \mathbf{x}_{i}+\mathbf{b}^{(1)}\right) \\
+    &\mathbf{y}_{i}^{(k)}=\sigma\left(W^{(k)} \mathbf{y}_{i}^{(k-1)}+\mathbf{b}^{(k)}\right), k=2, \ldots, K
+    \end{aligned}
+    $$
+    First-Order Proximity Loss Function
+    $$
+    \begin{aligned}
+    \mathcal{L}_{1 s t} &=\sum_{i, j=1}^{n} s_{i, j}\left\|\mathbf{y}_{i}^{(K)}-\mathbf{y}_{j}^{(K)}\right\|_{2}^{2} \\
+    &=\sum_{i, j=1}^{n} s_{i, j}\left\|\mathbf{y}_{i}-\mathbf{y}_{j}\right\|_{2}^{2}
+    \end{aligned}
+    $$
+\end{frame}
+% 二阶
+\begin{frame}{SDNE}
+    \framesubtitle{Second-Order Proximity}
+    The autoencoder goal is to minimize:
+    $$
+    \mathcal{L}=\sum_{i=1}^{n}\left\|\hat{\mathbf{x}}_{i}-\mathbf{x}_{i}\right\|_{2}^{2}
+    $$
+    {Structural Similarity $x_i=s_i$} 
+    $$
+    \begin{aligned}
+    \mathcal{L}_{2 n d} &=\sum_{i=1}^{n}\left\|\left(\hat{\mathbf{x}}_{i}-\mathbf{x}_{i}\right) \odot \mathbf{b}_{\mathbf{i}}\right\|_{2}^{2} \\
+    &=\|(\hat{X}-X) \odot B\|_{F}^{2}
+    \end{aligned}
+    $$
+\end{frame}
+% 损失函数
+\begin{frame}{SDNE}
+    \framesubtitle{Objective Function}
+    正则化部分
+    $$
+    \mathcal{L}_{r e g}=\frac{1}{2} \sum_{k=1}^{K}\left(\left\|W^{(k)}\right\|_{F}^{2}+\left\|\hat{W}^{(k)}\right\|_{F}^{2}\right)
+    $$
+    损失函数
+    $$
+    \begin{aligned}
+    \mathcal{L}_{m i x} &=\mathcal{L}_{2 n d}+\alpha \mathcal{L}_{1 s t}+\nu \mathcal{L}_{r e g} \\
+    &=\|(\hat{X}-X) \odot B\|_{F}^{2}+\alpha \sum_{i, j=1}^{n} s_{i, j}\left\|\mathbf{y}_{i}-\mathbf{y}_{j}\right\|_{2}^{2}+\nu \mathcal{L}_{r e g}
+    \end{aligned}
+    $$
 \end{frame}
 % -----------------------------------------END------------------------------------------
 \end{document}

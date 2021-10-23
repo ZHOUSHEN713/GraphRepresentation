@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.9.30)  20 OCT 2021 18:36
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.9.30)  23 OCT 2021 12:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1042,19 +1042,108 @@ File: Figures//whulogo.eps Graphic file (type eps)
  [15
 
 ]
+File: Figures//node2vec_1.pdf Graphic file (type pdf)
+<use Figures//node2vec_1.pdf>
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
  [16
 
 ]
+File: Figures//node2vec_2.pdf Graphic file (type pdf)
+<use Figures//node2vec_2.pdf>
+
+Overfull \hbox (5.71606pt too wide) in paragraph at lines 212--212
+ [][] 
+ []
+
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
- [17
+[17
+
+]
+File: Figures//node2vec_3.pdf Graphic file (type pdf)
+<use Figures//node2vec_3.pdf>
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+ [18
+
+]
+File: Figures//struc2vec.pdf Graphic file (type pdf)
+<use Figures//struc2vec.pdf>
+
+Overfull \hbox (7.58391pt too wide) in paragraph at lines 229--229
+ [][][][] 
+ []
+
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+[19
 
 ]
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
- [18
+ [20
+
+]
+File: Figures//struc2vec_example.pdf Graphic file (type pdf)
+<use Figures//struc2vec_example.pdf>
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+ [21
+
+]
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+ [22
+
+]
+File: Figures//line.pdf Graphic file (type pdf)
+<use Figures//line.pdf>
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+ [23
+
+]
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+ [24
+
+]
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+ [25
+
+]
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+ [26
+
+]
+File: Figures//SDNE.pdf Graphic file (type pdf)
+<use Figures//SDNE.pdf>
+
+Overfull \hbox (2.13235pt too wide) in paragraph at lines 328--328
+ [][] 
+ []
+
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+[27
+
+]
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+ [28
+
+]
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+ [29
+
+]
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+ [30
 
 ]
 \tf@nav=\write5
@@ -1068,12 +1157,12 @@ File: Figures//whulogo.eps Graphic file (type eps)
 
  (./PPT.aux) ) 
 Here is how much of TeX's memory you used:
- 24635 strings out of 476919
- 515260 string characters out of 5825424
- 881397 words of memory out of 5000000
- 44090 multiletter control sequences out of 15000+600000
- 408622 words of font info for 69 fonts, out of 8000000 for 9000
+ 24785 strings out of 476919
+ 519300 string characters out of 5825424
+ 886674 words of memory out of 5000000
+ 44221 multiletter control sequences out of 15000+600000
+ 410860 words of font info for 84 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 131i,17n,132p,469b,685s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 131i,17n,132p,469b,781s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on PPT.pdf (18 pages).
+Output written on PPT.pdf (30 pages).
