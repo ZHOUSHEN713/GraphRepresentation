@@ -1,12 +1,13 @@
 import argparse
 import networkx as nx
 import torch
-
+import random
 from utils import get_logger, create_alias_table, alias_sample
 from collections import defaultdict
 from model import LINE
-from torch.optim import SGD
+from torch.optim import SGD, Adam
 from tqdm import tqdm
+from TEST.classifier import train_test
 
 
 class Trainer:
@@ -38,7 +39,11 @@ class Trainer:
         power = 0.75
         degree = defaultdict(int)
         for e in self.edges():
-            degree[self.node2idx[e[0]]] += self.graph[e[0]][e[1]]['weight']
+            if self.graph.is_directed():
+                degree[self.node2idx[e[0]]] += self.graph[e[0]][e[1]]['weight']
+            else:
+                degree[self.node2idx[e[0]]] += self.graph[e[0]][e[1]]['weight']
+                degree[self.node2idx[e[1]]] += self.graph[e[0]][e[1]]['weight']
         degree_sum = float(sum([degree[i] ** power for i in range(self.node_nums)]))
         normalized_probs = [degree[i] ** power / degree_sum for i in range(self.node_nums)]
         self.nodes = [v for v in range(self.node_nums)]
@@ -63,6 +68,17 @@ class Trainer:
                     if not self.graph.has_edge(self.idx2node[cur_edge[0]], self.idx2node[negative_ver]):
                         break
                 neg[-1].append(negative_ver)
+            # 无向图
+            if not self.graph.is_directed():
+                u_i.append(cur_edge[1])
+                u_j.append(cur_edge[0])
+                neg.append([])
+                for _ in range(self.args.K):
+                    while True:
+                        negative_ver = alias_sample(self.node_accept, self.node_alias)
+                        if not self.graph.has_edge(self.idx2node[cur_edge[1]], self.idx2node[negative_ver]):
+                            break
+                    neg[-1].append(negative_ver)
         return u_i, u_j, neg
 
     def train(self):
@@ -77,32 +93,57 @@ class Trainer:
                 self.optimizer.step()
                 self.optimizer.zero_grad()
                 bar.set_description(f"Epoch {epoch}: Loss {loss.item()}")
+            if epoch % 10 == 0:
+                self.test()
+
+    def get_embeddings(self):
+        weight = self.model.vertex_embedding.weight.detach().numpy()
+        embeddings = {}
+        for i in range(self.node_nums):
+            embeddings[self.idx2node[i]] = weight[i]
+        return embeddings
+
+    def test(self):
+        embeddings = self.get_embeddings()
+        data_x, data_y = [], []
+        with open(f"../data/{self.args.dataset}/{self.args.dataset}_labels.txt", mode='r') as f:
+            data = defaultdict(list)
+            for line in f.readlines():
+                x, y = line.split(" ")
+                data[x].append(int(y))  # 注意label是不是从0开始
+            for k, v in data.items():
+                data_x.append(k)
+                data_y.append(v)
+        micros, macros = 0.0, 0.0
+        for s in tqdm(random.sample(range(1, 10000), 10)):
+            ans = train_test(data_x, data_y, embeddings, 0.5, s)
+            micros += ans['micro']
+            macros += ans['macro']
+        print(micros / 10, macros / 10)
 
 
 if __name__ == "__main__":
     logger = get_logger()
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', default="wiki")
-    parser.add_argument('--is_weighted', type=bool, default=False)
-    parser.add_argument('--is_directed', type=bool, default=True)
+    parser.add_argument('--dataset', default="wikipedia")
     parser.add_argument('--K', type=int, default=5)  # 负采样个数
-    parser.add_argument('--order', type=int, default=2)
-    parser.add_argument('--emb_size', type=int, default=2 ** 8)
-    parser.add_argument('--lr', type=float, default=0.1)
-    parser.add_argument('--batch_size', type=int, default=4)
+    parser.add_argument('--order', type=int, default=2)  # 无向图只能计算二阶相似度
+    parser.add_argument('--emb_size', type=int, default=128)
+    parser.add_argument('--lr', type=float, default=0.025)
+    parser.add_argument('--batch_size', type=int, default=1)
     parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--device', type=str, default='cuda:0')
     args = parser.parse_args()
     graph = nx.read_edgelist(f"../data/{args.dataset}/{args.dataset}_edges.txt", create_using=nx.DiGraph(),
-                             nodetype=int)
-    if not args.is_weighted:
-        for e in graph.edges:
-            graph[e[0]][e[1]]['weight'] = 1.0
-    if not args.is_directed:
+                             data=[("weight", float)])
+    if not nx.is_weighted(graph):
+        nx.set_edge_attributes(graph, values=1.0, name='weight')
+    if args.dataset in ["BlogCatalog", "wikipedia"]:
         graph = graph.to_undirected()
 
     line = LINE(graph.number_of_nodes(), args)
-    optimizer = SGD(line.parameters(), lr=args.lr, momentum=0.9)
+    # optimizer = SGD(line.parameters(), lr=args.lr, momentum=0.9)
+    optimizer = Adam(line.parameters(), lr=args.lr)
 
     trainer = Trainer(graph, line, optimizer, args)
     trainer.train()

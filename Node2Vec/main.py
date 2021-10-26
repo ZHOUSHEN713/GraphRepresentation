@@ -21,16 +21,16 @@ def GetLogger():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', default="BlogCatalog")
+    parser.add_argument('--dataset', default="wiki")
     parser.add_argument('--length', type=int, default=80)
     parser.add_argument('--per_num', type=int, default=10)
     parser.add_argument('--min_count', type=int, default=0)
     parser.add_argument('--emb_size', type=int, default=128)
     parser.add_argument('--window_size', type=int, default=10)
-    parser.add_argument('--workers', type=int, default=4)
+    parser.add_argument('--workers', type=int, default=8)
 
-    parser.add_argument('--p', type=float, default=2)
-    parser.add_argument('--q', type=float, default=0.5)
+    parser.add_argument('--p', type=float, default=0.25)
+    parser.add_argument('--q', type=float, default=4)
     args = parser.parse_args()
     logger = GetLogger()
     # using nx.DiGraph create graph
@@ -40,13 +40,14 @@ if __name__ == "__main__":
         nx.set_edge_attributes(graph, values=1.0, name='weight')
     if args.dataset in ["BlogCatalog"]:
         graph = graph.to_undirected()
-    if not os.path.isfile(f"node2vec_{args.per_num}_{args.length}.txt"):
-        walks = GenerateWalks(args.per_num, args.length, graph)
-        pickle.dump(walks, open(f"node2vec_{args.per_num}_{args.length}.txt", 'wb'))
+    if not os.path.isfile(f"{args.dataset}_{args.per_num}_{args.length}_{args.p}_{args.q}.txt"):
+        walks = GenerateWalks(graph, args)
+        pickle.dump(walks, open(f"{args.dataset}_{args.per_num}_{args.length}_{args.p}_{args.q}.txt", 'wb'))
     else:
-        walks = pickle.load(open(f"node2vec_{args.per_num}_{args.length}.txt", 'rb'))
+        walks = pickle.load(open(f"{args.dataset}_{args.per_num}_{args.length}_{args.p}_{args.q}.txt", 'rb'))
     logger.info("generate walks done!")
     # skip-gram --- hierarchical softmax
     model = Word2Vec(sentences=walks, min_count=args.min_count, vector_size=args.emb_size, window=args.window_size,
-                     workers=args.workers, sg=1)
+                     workers=args.workers, sg=1, epochs=1)
+    model.save(f"{args.dataset}_{args.p}_{args.q}.model")
     logger.info("train Node2Vec done!")

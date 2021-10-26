@@ -1,5 +1,7 @@
 import random
+
 import numpy as np
+from tqdm import tqdm
 
 
 def create_alias_table(area_ratio):
@@ -65,11 +67,11 @@ def preprocess_transition_probs(graph, args):
         normalized_prob = [float(x) / prob_sum for x in unnormalized_prob]
         alias_nodes[cur] = create_alias_table(normalized_prob)
     alias_edges = {}
-    if args.is_directed:
-        for e in graph.edges():
+    if graph.is_directed():
+        for e in tqdm(graph.edges(), desc="get alias edges"):
             alias_edges[e] = get_alias_edge(graph, e[0], e[1], args)
     else:
-        for e in graph.edges():
+        for e in tqdm(graph.edges(), desc="get alias edges"):
             alias_edges[e] = get_alias_edge(graph, e[0], e[1], args)
             alias_edges[(e[1], e[0])] = get_alias_edge(graph, e[1], e[0], args)
     return alias_nodes, alias_edges
@@ -95,12 +97,16 @@ def BiasWalk(graph, start, length, a, b):
 
 
 def GenerateWalks(graph, args):
+    # if not os.path.isfile(f"{args.dataset}_{args.p}_{args.q}_probs.txt"):
+    #     a, b = preprocess_transition_probs(graph, args)
+    #     pickle.dump([a, b], open(f"{args.dataset}_{args.p}_{args.q}_probs.txt", "wb"))
+    # else:
+    #     a, b = pickle.load(open(f"{args.dataset}_{args.p}_{args.q}_probs.txt", "rb"))
     a, b = preprocess_transition_probs(graph, args)
     walks = []
     nodes = list(graph.nodes())
-    for _ in range(args.per_num):
+    for _ in tqdm(range(args.per_num), desc="generate walks"):
         random.shuffle(nodes)
         for ver in nodes:
             walks.append(BiasWalk(graph, ver, args.length, a, b))
     return walks
-

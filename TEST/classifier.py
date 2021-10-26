@@ -8,6 +8,9 @@ from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
+import warnings
+
+warnings.filterwarnings('ignore')
 
 
 def train_test(data_x, data_y, embeddings, TR, seed):
@@ -40,13 +43,14 @@ def train_test(data_x, data_y, embeddings, TR, seed):
 
 if __name__ == "__main__":
     # 载入已经训练好的模型
-    model = Word2Vec.load("../DeepWalk/BlogCatalog_128_10.model")
+    dataset = "wiki"
+    model = Word2Vec.load(f"../Node2Vec/{dataset}_0.25_4.model")
     data_x, data_y = [], []
-    with open("../data/BlogCatalog/BlogCatalog_labels.txt", mode='r') as f:
+    with open(f"../data/{dataset}/{dataset}_labels.txt", mode='r') as f:
         data = defaultdict(list)
         for line in f.readlines():
             x, y = line.split(" ")
-            data[x].append(int(y) - 1)
+            data[x].append(int(y))
         for k, v in data.items():
             data_x.append(k)
             data_y.append(v)
@@ -55,9 +59,8 @@ if __name__ == "__main__":
         embeddings[u] = model.wv[u]
 
     micros, macros = 0.0, 0.0
-    for s in tqdm(random.sample(range(1, 10000), 10)):
-        ans = train_test(data_x, data_y, embeddings, 0.9, s)
+    for s in tqdm(range(10)):
+        ans = train_test(data_x, data_y, embeddings, 0.2, s)
         micros += ans['micro']
         macros += ans['macro']
     print(micros / 10, macros / 10)
-

@@ -1,5 +1,5 @@
 import argparse
-
+import warnings
 import torch
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
@@ -9,6 +9,8 @@ from utils import get_logger
 from tqdm import tqdm
 import networkx as nx
 import scipy.sparse as sp
+
+warnings.filterwarnings('ignore')
 
 
 class IndexDataset(Dataset):
@@ -74,8 +76,6 @@ class Trainer:
                 bar.set_description(f"Epoch {epoch}: Loss {loss.item()}")
 
 
-
-
 if __name__ == "__main__":
     logger = get_logger()
     parser = argparse.ArgumentParser()
@@ -93,10 +93,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
     # 读入的数据应该要提前经过映射
     graph = nx.read_edgelist(f"../data/{args.dataset}/{args.dataset}_edges.txt", create_using=nx.DiGraph(),
-                             nodetype=int, data=(("weight", float),))
+                             data=(("weight", float),))
     if not nx.is_weighted(graph):
         nx.set_edge_attributes(graph, values=1.0, name='weight')
-
+    if args.dataset in ["BlogCatalog", "wikipedia"]:
+        graph = graph.to_undirected()
     model = SDNE(nodes=graph.number_of_nodes(), args=args).to(args.device)
     optimizer = Adam(model.parameters(), lr=args.lr)
 
