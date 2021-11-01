@@ -31,34 +31,65 @@
 % 统计语言模型
 \begin{frame}{Word2Vec}
     \framesubtitle{统计语言模型}
-    
-    
+    对于一个给定的句子：
+    $$S=\{w_1, w_2, w_3, w_4, \cdots, w_n\}$$
+    其概率可以计算为：
+    $$
+        \begin{aligned}
+            P(S)&=P\left(w_{1}, w_{2}, \ldots, w_{n}\right) \\
+            &=P\left(w_{1}\right) P\left(w_{2} \mid w_{1}\right) \ldots P\left(w_{n} \mid w_{1}, w_{2}, \ldots, w_{n-1}\right) \\
+            &=\prod_{i=1}^{n} p\left(w_{i} \mid w_{1} \ldots w_{i-1}\right)
+        \end{aligned}
+    $$
+    缺点：1.数据稀疏严重 2.参数空间过大
+\end{frame}
+
+\begin{frame}{Word2Vec}
+    \framesubtitle{N-Gram}
+    马尔科夫假设：语言中的每一个词只与前面长度为$n-1$的上下文相关 \\
+    例如：2-Gram模型假设下一个词的出现只依赖于前一个词
+    $$P(S)=P(w_1)P(w_2 \mid w_1) \cdots P(w_n\mid w_{n-1})$$
+    \begin{enumerate}[1)]
+        \item 当n较大时，可以学习到更多语境信息，但是参数多，训练量大，更稀疏
+        \item 当n较小时，提供的语境信息少，参数少，但是在训练语料库中出现的次数多，统计结果更加可靠
+    \end{enumerate}
 \end{frame}
 % one-hot encoding
 \begin{frame}{Word2Vec}
     \framesubtitle{One-Hot Encoding}
-    \centering\includegraphics[height=5cm]{one_hot.png}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \centering\includegraphics[height=5cm]{one_hot.png}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            缺点：
+            \begin{itemize}
+                \item 单词的维度受到语料库的大小影响
+                \item 相近的两个词的向量无法体现其关系
+            \end{itemize}
+        \end{column}
+    \end{columns}
 \end{frame}
 % one-word context
 \begin{frame}{Word2Vec}
     \framesubtitle{One-Word Context}
     \centering\includegraphics[height=4cm]{word2vec_1.pdf}
-    \begin{equation}
+    $$
         \mathbf{h}=\mathbf{W}^{T} \mathbf{x}=\mathbf{W}_{(k, \cdot)}^{T}:=\mathbf{v}_{w_{I}}^{T}, u_j=\mathbf{v}_{w_j}^{\prime}h
-    \end{equation}
-    \begin{equation}
+    $$
+    $$
         p\left(w_{j} \mid w_{I}\right)=y_{j}=\frac{\exp \left(u_{j}\right)}{\sum_{j^{\prime}=1}^{V} \exp \left(u_{j^{\prime}}\right)}
-    \end{equation}
+        $$
 \end{frame}
 % Objective Function
 \begin{frame}{Word2Vec}
     \framesubtitle{Objective Function}
     \begin{equation}
         \begin{aligned}
-        \max p\left(w_{O} \mid w_{I}\right) &=\max y_{j^{*}} \\
-        &=\max \log y_{j^{*}} \\
-        &=u_{j^{*}}-\log \sum_{j^{\prime}=1}^{V} \exp \left(u_{j^{\prime}}\right):=-E
-        \end{aligned}
+            \max p\left(w_{O} \mid w_{I}\right) &=\max y_{j^{*}} \\
+            &=\max \log y_{j^{*}} \\
+            &=u_{j^{*}}-\log \sum_{j^{\prime}=1}^{V} \exp \left(u_{j^{\prime}}\right):=-E
+            \end{aligned}
     \end{equation}
     \begin{alertblock}{常用变形}
         $\min E=-u_{j^{*}}+\log \sum_{j^{\prime}=1}^{V} \exp \left(u_{j^{\prime}}\right)$
@@ -107,6 +138,7 @@
 % Hierarchical Softmax
 \begin{frame}{Word2Vec}
     \framesubtitle{Hierarchical Softmax}
+    哈夫曼树的构建是基于语料库中单词出现的频率
     \centering\includegraphics[height=4cm]{word2vec_4.pdf}
     $$
         p\left(w=w_{O}\right)=\prod_{j=1}^{L(w)-1} \sigma\left([ n(w, j+1)=\operatorname{ch}(n(w, j)) ] \cdot \mathbf{v}_{n(w, j)}^{\prime}{ }^{T} \mathbf{h}\right)
@@ -123,6 +155,17 @@
     $$
         E=-\log \sigma\left(\mathbf{v}_{w_{O}}^{\prime}{ }^{T} \mathbf{h}\right)-\sum_{w_{j} \in \mathcal{W}_{\mathrm{neg}}} \log \sigma\left(-\mathbf{v}_{w_{j}}^{\prime}{ }^{T} \mathbf{h}\right)
     $$
+\end{frame}
+% 总结
+\begin{frame}{Word2Vec}
+    \framesubtitle{总结}
+    \begin{enumerate}
+        \item Word2Vec主要包含两个模型CBOW(根据上下文预测中心词的概率)与Skip-Gram(根据中心词来预测上下文)
+        \item Word2Vec可以被看作是一个多分类模型，但是我们更加关注这个模型的附加产物(每一个单词的映射向量)
+        \item Hierarchical Softmax与Negative Sample其实本质上都是在优化softmax，我们知道softmax的时间复杂度是$O(N)$,
+              因此，我们可以将其转化为$log(N)$次的二分类计算，这便是Hierarchical Softmax。负采样则是对（1）式的后半
+              部分进行优化，不需要全部的非目标词都作为负样本，等于把$O(N)$复杂度降为$O(m)$，m为负样本的个数。
+    \end{enumerate}
 \end{frame}
 % ---------------------------------------DeepWalk---------------------------------------
 \section{DeepWalk}
@@ -177,7 +220,16 @@
         $\underset{\Phi}{\operatorname{minimize}}-\log \operatorname{Pr}\left(\left\{v_{i-w}, \cdots, v_{i-1}, v_{i+1}, \cdots, v_{i+w}\right\} \mid \Phi\left(v_{i}\right)\right)$
     \end{corollary}
 \end{frame}
-
+% 总结
+\begin{frame}{DeepWalk}
+    \framesubtitle{总结}
+    \begin{enumerate}
+        \item DeepWalk将图中的每一个点对应成一个单词，将图中随机游走生成的序列看作是句子，基于此使用Work2Vec的思想来学习
+              每一个节点的向量，并用作下游任务
+        \item 正是由于其游走的随机性，DeepWalk没有确定的相似度优化目标函数，没有办法针对性的捕捉特定的相似性
+        (homophily and structural equivalence)
+    \end{enumerate}
+\end{frame}
 % ---------------------------------------Node2Vec---------------------------------------
 \section{Node2Vec}
 % 为什么使用BFS与DFS
@@ -200,6 +252,8 @@
             $$
         \end{column}
     \end{columns}
+    这里表示的是当上一个经过的点是$t$，且当前位于$v$，则下一个点转移的影响因子$\alpha $的计算公式，转移权重公式为$\pi_{v x}=\alpha_{p q}(t, x) \cdot w_{v x}$。
+    在实现中，我们需要使用Alias Sample来预先处理，将确定转移点的时间复杂度从$O(n)$降为$O(1)$，也正因此需要存储大量的转移概率，用空间换时间。
 \end{frame}
 % 优化目标与算法
 \begin{frame}{Node2Vec}
@@ -208,6 +262,21 @@
     \begin{corollary}
         $\max _{f} \sum_{u \in V}\left[\sum_{n_{i} \in N_{S}(u)} f\left(n_{i}\right) \cdot f(u)-\log Z_{u}\right]$
     \end{corollary}
+\end{frame}
+% 总结
+\begin{frame}{Node2Vec}
+    \framesubtitle{总结}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \centering\includegraphics[width=\textwidth]{node2vec_4.pdf}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            1.左图上半部分使用的参数$p > q$，相同社区的点都被划分成了相同的颜色，更多体现的是同质性；而下半部分则是$p < q$，更多的
+            是结构相似的点被划分成了相同的颜色，更多体现的是结构相似性。\\
+            2.Node2Vec本质就是通过BFS与DFS两种随机游走的策略来控制随机游走的方向以此来偏向捕获特定的相似性。
+            3.Node2Vec也是有一些缺陷存在，例如如果两个点如果相距太远，很难通过游走策略来捕捉其结构相似性。
+        \end{column}
+    \end{columns}
 \end{frame}
 % ---------------------------------------Stuc2Vec---------------------------------------
 \section{Struc2Vec}
@@ -267,6 +336,23 @@
     $$
     $$d(a, b) = \frac{max(a, b)}{min(a, b)} - 1$$
 \end{frame}
+% 优化
+\begin{frame}{Struc2Vec}
+    \framesubtitle{Optimization}
+    OPT1: 对于每一个节点的有序度序列，其空间复杂度为$O(n)$，为了减少花费，将其转化为(度数，出现次数)这样的形式，距离方程变成如下：
+    $$
+    \operatorname{dist}(a, b)=\left(\frac{\max \left(a_{0}, b_{0}\right)}{\min \left(a_{0}, b_{0}\right)}-1\right) \max \left(a_{1}, b_{1}\right)
+    $$
+    OPT2:两个度数相差很大的点没有必要计算他们的距离，使用双指针寻找与度相近的节点进行计算，将时间复杂度从$O(n^2)$降为$O(nlog(n))$\\
+    OPT3:限制层次带权图层数
+\end{frame}
+%总结
+\begin{frame}{Struc2Vec}
+    \framesubtitle{总结}
+    1. Struc2Vec基于节点之间的结构相似性来构建多层加权图，并在这张多层加权图上进行游走生成序列，使用Word2Vec的思想进行优化，
+    不像Node2Vec受限于Window Size的限制导致无法捕捉距离很远的两个点之间的结构相似度\\
+    2. 这篇文章的核心就是公式(4)，通过计算两个节点之间的度序列的相似性来计算其结构相似性
+\end{frame}
 % ---------------------------------------LINE--------------------------------------------
 \section{LINE}
 % 一阶相似度与二阶相似度
@@ -310,6 +396,15 @@
     \hspace*{\fill}\\ 
     \hspace*{\fill}\\
     2. Edge Sample - Alias Sample
+\end{frame}
+% 总结
+\begin{frame}{LINE}
+    \framesubtitle{总结}
+    1.LINE的核心思想是通过捕获图中的一阶相似度(两个点之间有连接)和二阶相似度(两个点有相同的邻居)\\
+    2.使用KL散度来计算相似度，最小化条件概率与经验概率之间的差距\\
+    3.对于一阶相似度，如果只计算两个向量的乘积会导致平凡解，因此也加入负采样的思想进行优化，这样就将一阶
+    相似度与二阶相似度统一使用一个目标函数进行表示，唯一的差别就在于$u_j$，在优化一阶与二阶时对其使用不同
+    的Embedding。
 \end{frame}
 % -----------------------------------------SDNE-----------------------------------------
 \section{SDNE}
@@ -364,6 +459,15 @@
     &=\|(\hat{X}-X) \odot B\|_{F}^{2}+\alpha \sum_{i, j=1}^{n} s_{i, j}\left\|\mathbf{y}_{i}-\mathbf{y}_{j}\right\|_{2}^{2}+\nu \mathcal{L}_{r e g}
     \end{aligned}
     $$
+\end{frame}
+% 总结
+\begin{frame}{SDNE}
+    \framesubtitle{总结}
+    1.DeepWalk使用随机游走与Skip-Gram来学习节点表示，但是缺少一个明确的优化函数来学习图结构特征，LINE只是结合了
+    一阶相似度与二阶相似度，其节点表示受限于它是一个浅层模型效果不够好。\\
+    2.SDNE的构建思路围绕三点：模型的高度非线性来更好的学习节点的深层次表示；能够很好的保留结构特性；如何处理稀疏性问题。\\
+    3.SDNE使用自编码器来优化二阶相似度(其中输入$x$是度序列，跟Struc2Vec一样都是通过度序列来计算结构上的相似度)，
+    使得结构相似的顶点具有相似的Embedding，而对于一阶相似度则是使得相邻两个顶点对应的Embedding接近。
 \end{frame}
 % 复现结果
 \section{Experiment}

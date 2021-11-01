@@ -1,7 +1,7 @@
 \beamer@sectionintoc {1}{Word2Vec}{3}{0}{1}
-\beamer@sectionintoc {2}{DeepWalk}{11}{0}{2}
-\beamer@sectionintoc {3}{Node2Vec}{16}{0}{3}
-\beamer@sectionintoc {4}{Struc2Vec}{19}{0}{4}
-\beamer@sectionintoc {5}{LINE}{23}{0}{5}
-\beamer@sectionintoc {6}{SDNE}{27}{0}{6}
-\beamer@sectionintoc {7}{Experiment}{31}{0}{7}
+\beamer@sectionintoc {2}{DeepWalk}{13}{0}{2}
+\beamer@sectionintoc {3}{Node2Vec}{19}{0}{3}
+\beamer@sectionintoc {4}{Struc2Vec}{23}{0}{4}
+\beamer@sectionintoc {5}{LINE}{29}{0}{5}
+\beamer@sectionintoc {6}{SDNE}{34}{0}{6}
+\beamer@sectionintoc {7}{Experiment}{39}{0}{7}
