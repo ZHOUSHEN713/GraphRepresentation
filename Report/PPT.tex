@@ -28,6 +28,12 @@
 \end{frame}
 % ---------------------------------------Word2Vec---------------------------------------
 \section{Word2Vec}
+% 统计语言模型
+\begin{frame}{Word2Vec}
+    \framesubtitle{统计语言模型}
+    
+    
+\end{frame}
 % one-hot encoding
 \begin{frame}{Word2Vec}
     \framesubtitle{One-Hot Encoding}
@@ -171,22 +177,7 @@
         $\underset{\Phi}{\operatorname{minimize}}-\log \operatorname{Pr}\left(\left\{v_{i-w}, \cdots, v_{i-1}, v_{i+1}, \cdots, v_{i+w}\right\} \mid \Phi\left(v_{i}\right)\right)$
     \end{corollary}
 \end{frame}
-% 结果
-\begin{frame}{DeepWalk}
-    \framesubtitle{复现结果}
-    \begin{table}[]
-        \resizebox{\textwidth}{!}
-        {
-            \begin{tabular}{lllllllllll}
-                        & Label Node\% & 10    & 20    & 30    & 40    & 50    & 60    & 70    & 80    & 90    \\
-            micro-F1 & 原文结果         & 36.00 & 38.20 & 39.60 & 40.30 & 41.00 & 41.30 & 41.50 & 41.50 & 42.00 \\
-                        & 复现结果         & 36.00 & 38.73 & 39.75 & 40.70 & 41.27 & 41.98 & 42.18 & 41.99 & 42.65 \\
-            macro-F1 & 原文结果         & 21.30 & 23.80 & 25.30 & 26.30 & 27.30 & 27.60 & 27.90 & 28.20 & 28.90 \\
-                        & 复现结果         & 20.90 & 23.78 & 25.33 & 26.31 & 27.09 & 27.84 & 28.16 & 28.25 & 28.78
-            \end{tabular}
-        }
-    \end{table}
-\end{frame}
+
 % ---------------------------------------Node2Vec---------------------------------------
 \section{Node2Vec}
 % 为什么使用BFS与DFS
@@ -373,6 +364,22 @@
     &=\|(\hat{X}-X) \odot B\|_{F}^{2}+\alpha \sum_{i, j=1}^{n} s_{i, j}\left\|\mathbf{y}_{i}-\mathbf{y}_{j}\right\|_{2}^{2}+\nu \mathcal{L}_{r e g}
     \end{aligned}
     $$
+\end{frame}
+% 复现结果
+\section{Experiment}
+\begin{frame}{复现结果}
+    \begin{table}[]
+        \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        Dataset       & Method    & LabelNode & macro-F1 & 参考值 \\ \hline
+        Wiki          & Node2Vec  & 50\%      & 51.10    & 50.52  \\ \hline
+                      & SDNE      & 50\%      & 49.70    & 49.80  \\ \hline
+        BlogCatalog   & DeepWalk  & 50\%      & 21.80    & 21.10  \\ \hline
+                      & Node2Vec  & 50\%      & 23.50    & 23.00  \\ \hline
+        Wikipedia     & LINE      & 50\%      & 11.40    & 11.64  \\ \hline
+        Brazil-Flight & Struc2Vec & 50\%      & 67.94    & 68.30  \\ \hline
+        \end{tabular}
+    \end{table}
 \end{frame}
 % -----------------------------------------END------------------------------------------
 \end{document}

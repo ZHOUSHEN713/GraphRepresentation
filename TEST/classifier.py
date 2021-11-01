@@ -43,10 +43,10 @@ def train_test(data_x, data_y, embeddings, TR, seed):
 
 if __name__ == "__main__":
     # 载入已经训练好的模型
-    dataset = "wiki"
-    model = Word2Vec.load(f"../Node2Vec/{dataset}_0.25_4.model")
+    dataset = "brazil"
+    model = Word2Vec.load(f"../Struc2Vec/{dataset}_128_5.model")
     data_x, data_y = [], []
-    with open(f"../data/{dataset}/{dataset}_labels.txt", mode='r') as f:
+    with open(f"../data/flight/{dataset}_labels.txt", mode='r') as f:
         data = defaultdict(list)
         for line in f.readlines():
             x, y = line.split(" ")
@@ -56,11 +56,11 @@ if __name__ == "__main__":
             data_y.append(v)
     embeddings = {}
     for u in data_x:
-        embeddings[u] = model.wv[u]
+        embeddings[u] = model.wv[int(u)]
 
     micros, macros = 0.0, 0.0
     for s in tqdm(range(10)):
-        ans = train_test(data_x, data_y, embeddings, 0.2, s)
+        ans = train_test(data_x, data_y, embeddings, 0.5, s)
         micros += ans['micro']
         macros += ans['macro']
     print(micros / 10, macros / 10)

@@ -1,6 +1,7 @@
 import argparse
 import warnings
 import torch
+import random
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from torch.optim import Adam
@@ -9,6 +10,8 @@ from utils import get_logger
 from tqdm import tqdm
 import networkx as nx
 import scipy.sparse as sp
+from TEST.classifier import train_test
+from collections import defaultdict
 
 warnings.filterwarnings('ignore')
 
@@ -32,7 +35,13 @@ class Trainer:
         self.args = args
         self.adj, self.lap_mat = self.laplacian_matrix()
         self.dataloader = DataLoader(IndexDataset(self.graph.number_of_nodes()),
-                                     shuffle=True, batch_size=args.batch_size)
+                                     batch_size=args.batch_size)
+        # 初始化模型参数
+        for name, param in self.model.named_parameters():
+            try:
+                torch.nn.init.xavier_uniform_(param.data)
+            except:
+                pass
 
     def laplacian_matrix(self):
         node_size = self.graph.number_of_nodes()
@@ -69,31 +78,62 @@ class Trainer:
                 for name, param in self.model.named_parameters():
                     if "weight" in name:
                         loss_reg += torch.sum(param.data * param.data)
-                loss = loss_1st + loss_2nd + self.args.gamma * 0.5 * loss_reg
+                loss = self.args.alpha * loss_1st + loss_2nd + self.args.reg * loss_reg
                 loss.backward()
                 self.optimizer.step()
                 self.optimizer.zero_grad()
-                bar.set_description(f"Epoch {epoch}: Loss {loss.item()}")
+                bar.set_description(f"Epoch {epoch}: Loss {round(loss.item() / batch_B.shape[0], 4)}")
+            if epoch % 5 == 0:
+                self.test()
+
+    def get_embeddings(self):
+        embeddings = {}
+        with torch.no_grad():
+            self.model.eval()
+            vectors = self.model.predict(
+                torch.FloatTensor(self.adj.todense()).to(self.args.device)).cpu().detach().numpy()
+            for i in range(self.graph.number_of_nodes()):
+                embeddings[str(i)] = vectors[i]
+        return embeddings
+
+    def test(self):
+        embeddings = self.get_embeddings()
+        data_x, data_y = [], []
+        with open(f"../data/{self.args.dataset}/{self.args.dataset}_labels.txt", mode='r') as f:
+            data = defaultdict(list)
+            for line in f.readlines():
+                x, y = line.split(" ")
+                data[x].append(int(y))  # 注意label是不是从0开始
+            for k, v in data.items():
+                data_x.append(k)
+                data_y.append(v)
+        micros, macros = 0.0, 0.0
+        for s in tqdm(range(20)):
+            ans = train_test(data_x, data_y, embeddings, 0.2, s)
+            # print(ans)
+            micros += ans['micro']
+            macros += ans['macro']
+        print(micros / 20, macros / 20)
 
 
 if __name__ == "__main__":
     logger = get_logger()
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', default="wiki")
-    parser.add_argument('--alpha', type=float, default=0.2)
-    parser.add_argument('--beta', type=float, default=10)
-    parser.add_argument('--gamma', type=float, default=1e-2)
-    parser.add_argument('--hidden_size1', type=int, default=1000)
-    parser.add_argument('--hidden_size2', type=int, default=100)
-    parser.add_argument('--epochs', type=int, default=10)
-    parser.add_argument('--batch_size', type=int, default=8)
-    parser.add_argument('--lr', type=float, default=0.03)
+    parser.add_argument('--alpha', type=float, default=1e-6)
+    parser.add_argument('--beta', type=float, default=5)
+    parser.add_argument('--reg', type=float, default=1e-5)
+    parser.add_argument('--hidden_size1', type=int, default=256)
+    parser.add_argument('--hidden_size2', type=int, default=128)
+    parser.add_argument('--epochs', type=int, default=300)
+    parser.add_argument('--batch_size', type=int, default=10000)
+    parser.add_argument('--lr', type=float, default=3e-4)
     parser.add_argument('--device', type=str, default='cuda:0')
 
     args = parser.parse_args()
     # 读入的数据应该要提前经过映射
     graph = nx.read_edgelist(f"../data/{args.dataset}/{args.dataset}_edges.txt", create_using=nx.DiGraph(),
-                             data=(("weight", float),))
+                             data=(("weight", float),), nodetype=int)
     if not nx.is_weighted(graph):
         nx.set_edge_attributes(graph, values=1.0, name='weight')
     if args.dataset in ["BlogCatalog", "wikipedia"]:
@@ -103,3 +143,4 @@ if __name__ == "__main__":
 
     trainer = Trainer(graph, model, optimizer, args)
     trainer.train()
+    trainer.test()

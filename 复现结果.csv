@@ -1,0 +1,7 @@
+Dataset	Method	LabelNode	macro-F1	≤Œ’’÷µ
+Wiki	Node2Vec	50%	51.10 	50.52 
+	SDNE	50%	49.70 	49.80 
+BlogCatalog	DeepWalk	50%	21.80 	21.10 
+	Node2Vec	50%	23.50 	23.00 
+Wikipedia	LINE	50%	11.40 	11.64 
+Brazil-Flight	Struc2Vec	50%	67.94 	68.30 

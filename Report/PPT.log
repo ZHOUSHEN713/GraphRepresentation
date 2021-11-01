@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.9.30)  23 OCT 2021 12:14
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.9.30)  1 NOV 2021 15:39
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -931,55 +931,43 @@ File: Figures//whulogo.eps Graphic file (type eps)
  [2
 
 ]
-File: Figures//one_hot.png Graphic file (type bmp)
-<Figures//one_hot.png>
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
  [3
 
 ]
-File: Figures//word2vec_1.pdf Graphic file (type pdf)
-<use Figures//word2vec_1.pdf>
-LaTeX Font Info:    Trying to load font information for U+msa on input line 46.
- (c:/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 46.
- (c:/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+File: Figures//one_hot.png Graphic file (type bmp)
+<Figures//one_hot.png>
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
  [4
 
 ]
+File: Figures//word2vec_1.pdf Graphic file (type pdf)
+<use Figures//word2vec_1.pdf>
+LaTeX Font Info:    Trying to load font information for U+msa on input line 52.
+ (c:/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 52.
+ (c:/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
  [5
 
 ]
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+ [6
+
+]
 File: Figures//word2vec_2.pdf Graphic file (type pdf)
 <use Figures//word2vec_2.pdf>
 
-Overfull \hbox (5.15309pt too wide) in paragraph at lines 80--80
+Overfull \hbox (5.15309pt too wide) in paragraph at lines 86--86
  [][] 
- []
-
-File: Figures//whulogo.eps Graphic file (type eps)
-<Figures//whulogo.eps>
-[6
-
-]
-File: Figures//word2vec_3.pdf Graphic file (type pdf)
-<use Figures//word2vec_3.pdf>
-
-Overfull \hbox (17.36588pt too wide) in paragraph at lines 100--100
- [][] 
- []
-
-
-Overfull \hbox (7.21179pt too wide) detected at line 100
-[][]
  []
 
 File: Figures//whulogo.eps Graphic file (type eps)
@@ -987,56 +975,68 @@ File: Figures//whulogo.eps Graphic file (type eps)
 [7
 
 ]
+File: Figures//word2vec_3.pdf Graphic file (type pdf)
+<use Figures//word2vec_3.pdf>
+
+Overfull \hbox (17.36588pt too wide) in paragraph at lines 106--106
+ [][] 
+ []
+
+
+Overfull \hbox (7.21179pt too wide) detected at line 106
+[][]
+ []
+
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+[8
+
+]
 File: Figures//word2vec_4.pdf Graphic file (type pdf)
 <use Figures//word2vec_4.pdf>
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
- [8
+ [9
 
 ]
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
- [9
+ [10
 
 ]
 File: Figures//DeepWalk_1.eps Graphic file (type eps)
 <Figures//DeepWalk_1.eps>
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
- [10
+ [11
 
 ]
 File: Figures//DeepWalk_2.pdf Graphic file (type pdf)
 <use Figures//DeepWalk_2.pdf>
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
- [11
+ [12
 
 ]
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
- [12
+ [13
 
 ]
 File: Figures//DeepWalk_3.pdf Graphic file (type pdf)
 <use Figures//DeepWalk_3.pdf>
 
-Overfull \hbox (0.17473pt too wide) in paragraph at lines 165--165
+Overfull \hbox (0.17473pt too wide) in paragraph at lines 171--171
  [] 
  []
 
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
-[13
+[14
 
 ]
 File: Figures//DeepWalk_4.pdf Graphic file (type pdf)
 <use Figures//DeepWalk_4.pdf>
-File: Figures//whulogo.eps Graphic file (type eps)
-<Figures//whulogo.eps>
- [14
-
-]
 File: Figures//whulogo.eps Graphic file (type eps)
 <Figures//whulogo.eps>
  [15
@@ -1052,7 +1052,7 @@ File: Figures//whulogo.eps Graphic file (type eps)
 File: Figures//node2vec_2.pdf Graphic file (type pdf)
 <use Figures//node2vec_2.pdf>
 
-Overfull \hbox (5.71606pt too wide) in paragraph at lines 212--212
+Overfull \hbox (5.71606pt too wide) in paragraph at lines 203--203
  [][] 
  []
 
@@ -1071,7 +1071,7 @@ File: Figures//whulogo.eps Graphic file (type eps)
 File: Figures//struc2vec.pdf Graphic file (type pdf)
 <use Figures//struc2vec.pdf>
 
-Overfull \hbox (7.58391pt too wide) in paragraph at lines 229--229
+Overfull \hbox (7.58391pt too wide) in paragraph at lines 220--220
  [][][][] 
  []
 
@@ -1122,7 +1122,7 @@ File: Figures//whulogo.eps Graphic file (type eps)
 File: Figures//SDNE.pdf Graphic file (type pdf)
 <use Figures//SDNE.pdf>
 
-Overfull \hbox (2.13235pt too wide) in paragraph at lines 328--328
+Overfull \hbox (2.13235pt too wide) in paragraph at lines 319--319
  [][] 
  []
 
@@ -1146,6 +1146,15 @@ File: Figures//whulogo.eps Graphic file (type eps)
  [30
 
 ]
+Overfull \hbox (8.86528pt too wide) in paragraph at lines 383--383
+ [] 
+ []
+
+File: Figures//whulogo.eps Graphic file (type eps)
+<Figures//whulogo.eps>
+[31
+
+]
 \tf@nav=\write5
 \openout5 = `PPT.nav'.
 
@@ -1157,12 +1166,12 @@ File: Figures//whulogo.eps Graphic file (type eps)
 
  (./PPT.aux) ) 
 Here is how much of TeX's memory you used:
- 24785 strings out of 476919
- 519300 string characters out of 5825424
- 886674 words of memory out of 5000000
- 44221 multiletter control sequences out of 15000+600000
+ 24789 strings out of 476919
+ 519331 string characters out of 5825424
+ 884900 words of memory out of 5000000
+ 44225 multiletter control sequences out of 15000+600000
  410860 words of font info for 84 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  131i,17n,132p,469b,781s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on PPT.pdf (30 pages).
+Output written on PPT.pdf (31 pages).

@@ -19,12 +19,12 @@ class SDNE(nn.Module):
         y = F.relu(self.encode2(F.relu(self.encode1(x))))
         x_hat = F.relu(self.decode2(F.relu(self.decode1(y))))
 
-        loss_1st = self.args.alpha * 2 * torch.trace(torch.matmul(torch.matmul(y.transpose(0, 1), L_matrix), y))
+        loss_1st = 2 * torch.trace(torch.matmul(torch.matmul(y.transpose(0, 1), L_matrix), y)) / x.shape[0]
         loss_2nd = torch.mean(torch.sum(torch.pow((x_hat - x) * B_matrix, 2), dim=1))
 
         return loss_1st, loss_2nd
 
+    def predict(self, x):
+        y = self.encode2(self.encode1(x))
+        return y
 
-if __name__ == "__main__":
-    x = np.arange(10)
-    print(x.shape)

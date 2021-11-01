@@ -97,10 +97,12 @@ class Trainer:
                 self.test()
 
     def get_embeddings(self):
-        weight = self.model.vertex_embedding.weight.detach().numpy()
         embeddings = {}
-        for i in range(self.node_nums):
-            embeddings[self.idx2node[i]] = weight[i]
+        with torch.no_grad():
+            self.model.eval()
+            weight = self.model.vertex_embedding.weight.detach().numpy()
+            for i in range(self.node_nums):
+                embeddings[self.idx2node[i]] = weight[i]
         return embeddings
 
     def test(self):
